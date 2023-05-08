@@ -1,16 +1,15 @@
 const mongoose = require('mongoose');
 
-
 const dataSchema = new mongoose.Schema({
-    temp: {
+    temp15: {
         required: false,
         type: Number
     },
-    hum: {
+    hum15: {
         required: false,
         type: Number
     },
-   
+    
     dateInsertion:{
         required: false,
         type: Date
@@ -19,4 +18,4 @@ const dataSchema = new mongoose.Schema({
     
 })
 
-module.exports = mongoose.model('couveuse', dataSchema);
+module.exports = mongoose.model('graph', dataSchema);

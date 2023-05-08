@@ -10,7 +10,7 @@ const dataSchema = new mongoose.Schema({
         required: false,
         type: Number
     },
-   
+    
     dateInsertion:{
         required: false,
         type: Date
@@ -19,4 +19,6 @@ const dataSchema = new mongoose.Schema({
     
 })
 
-module.exports = mongoose.model('couveuse', dataSchema);
+
+module.exports = mongoose.model('serre', dataSchema);
+

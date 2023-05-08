@@ -1,28 +1,27 @@
 const express = require('express');
 const Model = require('../models/user');
-// const Serre = require('../models/serre');
-const Couveuse =require('../models/couveuse')
+const Serre = require('../models/serre');
+const Serre2 = require('../models/serre');
 
 
 // const serreRouter = express.Router()
-const couveuseRouter = express.Router()
+const serreRouter = express.Router()
 
-module.exports = couveuseRouter;
+module.exports = serreRouter;
 
 //////ROUTE POUR LA SERRE/////
 
+// ROUTE POUR ENREGISTRER UNE NOUVELLE DONNEE DE LA COUVEUSE
+serreRouter.post('/postSerre', async (req, res) => {
 
-couveuseRouter.post('/postCOuveuse', async (req, res) => {
 
+  const {temp,
+    hum,} = req.body;
 
-  const {
-    temp,
-    hum} = req.body;
-
-  // const users = [];
+  const users = [];
 
   let dateInsertion = new Date();
-  const newCouv = Couveuse({
+  const newUser = Serre({
     temp,
     hum,
     dateInsertion
@@ -30,9 +29,9 @@ couveuseRouter.post('/postCOuveuse', async (req, res) => {
 
   try {
 
-    await newCouv.save();
+    await newUser.save();
 
-    res.status(201).json(newCouv);
+    res.status(201).json(newUser);
 
   } catch (error) {
     res.status(404).json({ message: error.message })
@@ -41,11 +40,11 @@ couveuseRouter.post('/postCOuveuse', async (req, res) => {
 })
 
 
-
-couveuseRouter.get('/couveuse', async (req, res) => {
+// ROUTE POUR OBTENIR TOUS LES ENREGISTREMENTS DE LA COUVEUSE
+serreRouter.get('/serre', async (req, res) => {
     try {
-        const data = await Couveuse.find();
-        res.json(data) 
+        const data = await Serre.find();
+        res.json(data)
       }
       catch (error) {
         res.status(500).json({ message: error.message })
@@ -53,9 +52,27 @@ couveuseRouter.get('/couveuse', async (req, res) => {
 })
 
 
-couveuseRouter.get('/couveuse/:id', async (req, res) => {
+serreRouter.get('/serr', async (req, res) => {
   try {
-    const data = await Couveuse.findById(req.params.id);
+      const data = await Serre.findOne({},{}, { sort: { '_id' : -1 } });
+      res.json(data)
+  }
+  catch (error) {
+  res.status(500).json({ message: error.message })
+  }
+})
+
+
+
+
+
+
+
+
+
+serreRouter.get('/serre/:id', async (req, res) => {
+  try {
+    const data = await Serre.findById(req.params.id);
     return res.json(data)
   }
   catch (error) {
@@ -63,9 +80,9 @@ couveuseRouter.get('/couveuse/:id', async (req, res) => {
   }
 })
 
-//Methode pour la modification donnée particuliere de la couveuse
-couveuseRouter.patch('/couveuseUpdate/:id',  async (req, res) => {
-//   const { matin, soir } = req.body;
+//Methode pour la modification 
+serreRouter.patch('/serreUpdate/:id',  async (req, res) => {
+  const { matin, soir } = req.body;
 
   try {
 
@@ -82,7 +99,7 @@ couveuseRouter.patch('/couveuseUpdate/:id',  async (req, res) => {
      }
     await result.save();
 
-    return res.status(200).json({ message: 'modification reussie' });
+    return res.status(200).json({ message: 'Insertion reussie' });
   
   }
   catch (error) {
